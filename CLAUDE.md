@@ -1,10 +1,33 @@
 # Ravegraph
 
-A system for storing details about infrastructure and systems, designed for consulting SREs.
+An MCP-based platform for storing system details for consulting SREs. Readiness scoring, supply chain intelligence, and incident learning.
+
+## Tech Stack
+
+- **Language**: TypeScript
+- **Primary interface**: MCP server (`@modelcontextprotocol/sdk`)
+- **Human interface**: CLI → TUI → Web UI
+- **Database**: PostgreSQL (Docker Compose for dev)
+- **Dev environment**: Node/TypeScript native (no Docker for the app)
+
+See `docs/adr/` for Architecture Decision Records.
+See `docs/DELIVERY_BACKLOG.md` for the full backlog and GitHub issues.
 
 ## Development
 
-Tech stack TBD.
+```bash
+# Start database
+docker compose up -d
+
+# Install dependencies
+npm install
+
+# Run MCP server
+npm run dev
+
+# Run CLI
+npm run cli -- --help
+```
 
 ## Git Workflow
 
