@@ -89,7 +89,7 @@ None
 ### Issue 1b — CLI Scaffold
 
 **Description**
-Set up the `ravegraph` CLI framework alongside the MCP server.
+Set up the `rave` CLI framework alongside the MCP server.
 
 **Deliverables**
 
