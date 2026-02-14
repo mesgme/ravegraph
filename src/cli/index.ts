@@ -19,7 +19,7 @@ export function createCli(deps: CliDeps): Command {
   const program = new Command();
 
   program
-    .name('ravegraph')
+    .name('rave')
     .description('Ravegraph CLI - Work Dashboard for SRE consulting')
     .version('0.1.0');
 
