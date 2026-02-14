@@ -182,12 +182,12 @@ export async function getReadinessTrends(options?: {
       section_scores,
       recorded_at
     FROM readiness_scores
-    WHERE recorded_at >= NOW() - INTERVAL '${daysBack} days'
+    WHERE recorded_at >= NOW() - INTERVAL '1 day' * $1
   `;
 
-  const params: any[] = [];
+  const params: any[] = [daysBack];
   if (options?.serviceId) {
-    query += ' AND service_id = $1';
+    query += ' AND service_id = $2';
     params.push(options.serviceId);
   }
 
