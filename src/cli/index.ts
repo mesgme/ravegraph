@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { Command } from 'commander';
 import { testConnection } from '../persistence/db.js';
 import {
   getControls,
@@ -11,14 +12,83 @@ import {
 /**
  * Ravegraph CLI
  *
- * Simple CLI for interacting with the Work Dashboard
+ * CLI for interacting with the Work Dashboard using Commander.js framework
  */
 
-async function main() {
-  const args = process.argv.slice(2);
-  const command = args[0];
+const program = new Command();
 
-  // Test database connection
+program
+  .name('ravegraph')
+  .description('Ravegraph CLI - Work Dashboard for SRE consulting')
+  .version('0.1.0');
+
+// Dashboard command
+program
+  .command('dashboard')
+  .alias('d')
+  .description('Get full work dashboard (optionally filtered by service)')
+  .argument('[serviceId]', 'Service ID to filter by')
+  .action(async (serviceId?: string) => {
+    await ensureDatabase();
+    try {
+      const dashboard = await getWorkDashboard(
+        serviceId ? { serviceId } : undefined
+      );
+      console.log(JSON.stringify(dashboard, null, 2));
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Controls command
+program
+  .command('controls')
+  .alias('c')
+  .description('Get resilience backlog controls')
+  .action(async () => {
+    await ensureDatabase();
+    try {
+      const controls = await getControls();
+      console.log(JSON.stringify(controls, null, 2));
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Work items command
+program
+  .command('work')
+  .alias('w')
+  .description('Get incident-derived work items')
+  .action(async () => {
+    await ensureDatabase();
+    try {
+      const workItems = await getWorkItems();
+      console.log(JSON.stringify(workItems, null, 2));
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Readiness trends command
+program
+  .command('trends')
+  .alias('t')
+  .description('Get readiness trends')
+  .action(async () => {
+    await ensureDatabase();
+    try {
+      const trends = await getReadinessTrends();
+      console.log(JSON.stringify(trends, null, 2));
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+/**
+ * Ensure database connection is available
+ */
+async function ensureDatabase(): Promise<void> {
   const connected = await testConnection();
   if (!connected) {
     console.error(
@@ -27,86 +97,18 @@ async function main() {
     console.error('Run: docker compose up -d');
     process.exit(1);
   }
-
-  try {
-    switch (command) {
-      case 'dashboard':
-      case 'd': {
-        const serviceId = args[1];
-        const dashboard = await getWorkDashboard(
-          serviceId ? { serviceId } : undefined
-        );
-        console.log(JSON.stringify(dashboard, null, 2));
-        break;
-      }
-
-      case 'controls':
-      case 'c': {
-        const controls = await getControls();
-        console.log(JSON.stringify(controls, null, 2));
-        break;
-      }
-
-      case 'work':
-      case 'w': {
-        const workItems = await getWorkItems();
-        console.log(JSON.stringify(workItems, null, 2));
-        break;
-      }
-
-      case 'trends':
-      case 't': {
-        const trends = await getReadinessTrends();
-        console.log(JSON.stringify(trends, null, 2));
-        break;
-      }
-
-      case 'help':
-      case 'h':
-      case '--help':
-      case undefined: {
-        console.log(`
-Ravegraph CLI - Work Dashboard
-
-Usage:
-  ravegraph <command> [options]
-
-Commands:
-  dashboard, d [serviceId]   Get full work dashboard (optionally filtered by service)
-  controls, c                Get resilience backlog controls
-  work, w                    Get incident-derived work items
-  trends, t                  Get readiness trends
-  help, h                    Show this help message
-
-Examples:
-  ravegraph dashboard
-  ravegraph dashboard api-service
-  ravegraph controls
-  ravegraph work
-  ravegraph trends
-
-Database:
-  Ensure PostgreSQL is running: docker compose up -d
-  Connection: localhost:5432/ravegraph
-        `);
-        break;
-      }
-
-      default: {
-        console.error(`Unknown command: ${command}`);
-        console.error('Run "ravegraph help" for usage information');
-        process.exit(1);
-      }
-    }
-  } catch (error) {
-    console.error(
-      'Error:',
-      error instanceof Error ? error.message : String(error)
-    );
-    process.exit(1);
-  }
-
-  process.exit(0);
 }
 
-main();
+/**
+ * Handle errors consistently
+ */
+function handleError(error: unknown): void {
+  console.error(
+    'Error:',
+    error instanceof Error ? error.message : String(error)
+  );
+  process.exit(1);
+}
+
+// Parse command line arguments
+program.parse();

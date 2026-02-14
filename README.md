@@ -56,7 +56,16 @@ The database schema will be automatically created on first start.
 ### Verify Installation
 
 ```bash
-# Test CLI
+# Build the project
+npm run build
+
+# Link CLI globally (optional)
+npm link
+
+# Test CLI directly
+ravegraph --help
+
+# Or test via npm script
 npm run cli -- help
 
 # Test MCP server (in another terminal)
@@ -67,7 +76,37 @@ npm run dev
 
 ### CLI
 
-The CLI provides quick access to Work Dashboard data:
+The CLI provides quick access to Work Dashboard data using the Commander.js framework.
+
+#### Using the Global Command (after `npm link`)
+
+```bash
+# Show help
+ravegraph --help
+
+# Get full work dashboard
+ravegraph dashboard
+
+# Get dashboard for specific service
+ravegraph dashboard api-service
+
+# Get resilience backlog controls
+ravegraph controls
+
+# Get incident-derived work items
+ravegraph work
+
+# Get readiness trends
+ravegraph trends
+
+# Use command aliases (d, c, w, t)
+ravegraph d          # dashboard
+ravegraph c          # controls
+ravegraph w          # work
+ravegraph t          # trends
+```
+
+#### Using npm run cli
 
 ```bash
 # Get full work dashboard
