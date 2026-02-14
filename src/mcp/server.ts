@@ -17,7 +17,7 @@ import {
 
 /**
  * Work Dashboard MCP Server
- * 
+ *
  * Exposes tools for querying the Work Dashboard API:
  * - get_resilience_backlog: Query controls from Control Recommendation Engine (Issue #23)
  * - get_incident_work: Query work items from GitHub Issue Creation Agent (Issue #24)
@@ -41,7 +41,8 @@ const server = new Server(
 const tools: Tool[] = [
   {
     name: 'get_resilience_backlog',
-    description: 'Get resilience backlog controls from the Control Recommendation Engine. Returns controls with Prevent/Detect/Respond/Learn categorization.',
+    description:
+      'Get resilience backlog controls from the Control Recommendation Engine. Returns controls with Prevent/Detect/Respond/Learn categorization.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -51,7 +52,13 @@ const tools: Tool[] = [
         },
         status: {
           type: 'string',
-          enum: ['PROPOSED', 'APPROVED', 'IN_PROGRESS', 'COMPLETED', 'REJECTED'],
+          enum: [
+            'PROPOSED',
+            'APPROVED',
+            'IN_PROGRESS',
+            'COMPLETED',
+            'REJECTED',
+          ],
           description: 'Optional: Filter by control status',
         },
         priority: {
@@ -64,7 +71,8 @@ const tools: Tool[] = [
   },
   {
     name: 'get_incident_work',
-    description: 'Get incident-derived work items from the GitHub Issue Creation Agent. Returns tickets and remediation work.',
+    description:
+      'Get incident-derived work items from the GitHub Issue Creation Agent. Returns tickets and remediation work.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -86,7 +94,8 @@ const tools: Tool[] = [
   },
   {
     name: 'get_readiness_trends',
-    description: 'Get readiness trends from the Readiness Scoring Engine. Returns current scores, historical data, and trend direction.',
+    description:
+      'Get readiness trends from the Readiness Scoring Engine. Returns current scores, historical data, and trend direction.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -96,14 +105,16 @@ const tools: Tool[] = [
         },
         daysBack: {
           type: 'number',
-          description: 'Optional: Number of days of historical data (default: 30)',
+          description:
+            'Optional: Number of days of historical data (default: 30)',
         },
       },
     },
   },
   {
     name: 'get_work_dashboard',
-    description: 'Get aggregated work dashboard with all components: resilience backlog, incident work, readiness trends, and summary statistics.',
+    description:
+      'Get aggregated work dashboard with all components: resilience backlog, incident work, readiness trends, and summary statistics.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -197,15 +208,17 @@ async function main() {
   // Test database connection
   const connected = await testConnection();
   if (!connected) {
-    console.error('Failed to connect to database. Please ensure PostgreSQL is running.');
+    console.error(
+      'Failed to connect to database. Please ensure PostgreSQL is running.'
+    );
     process.exit(1);
   }
 
   console.error('Work Dashboard MCP Server starting...');
-  
+
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  
+
   console.error('Work Dashboard MCP Server running');
 }
 
