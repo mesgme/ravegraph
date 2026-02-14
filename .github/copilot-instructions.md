@@ -136,10 +136,9 @@ sectionScores?: Record<string, number>;
 
 ## Git Workflow
 
-- **Never merge PRs** - create PRs and leave merging to the user
-- Use `--author="Claude Code <claude-code@anthropic.com>"` for all commits
-- **Always use worktrees** for feature branches (never switch branches in main worktree)
+- **Use worktrees** for feature branches (never switch branches in main worktree)
 - No direct push to main (branch protection enforced)
+- All changes via PRs
 
 ### Worktree Workflow
 
@@ -155,6 +154,8 @@ git worktree remove ../ravegraph-<feature>
 git branch -d feature/<feature-name>
 git push origin --delete feature/<feature-name>
 ```
+
+> **Note**: For AI coding agent workflow details, see `CLAUDE.md`
 
 ## Testing
 
@@ -223,7 +224,6 @@ Keep dependencies minimal. Only add new dependencies when absolutely necessary.
 - ❌ Don't commit secrets, API keys, or sensitive data
 - ❌ Don't add unnecessary dependencies
 - ❌ Don't use `any` type - use proper types or `unknown`
-- ❌ Don't merge PRs yourself - leave that to the user
 - ❌ Don't switch branches in the main worktree - use git worktrees
 
 ## Questions?
