@@ -7,6 +7,9 @@
   "bin": {
     "ravegraph": "./dist/cli/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsx src/mcp/server.ts",
     "build": "tsc",
