@@ -211,12 +211,24 @@ See `src/persistence/schema/01-init.sql` for full schema details.
 ### Project Structure
 
 ```
-/src
-  /cli            # CLI commands
-  /mcp            # MCP server implementation
-  /domain         # Domain types and models
-  /persistence    # Database schema and repositories
-    /schema       # SQL migrations
+src/
+  domain/          # Types, errors, constants, port interfaces
+    ports/         # Repository interfaces
+  service/         # Business logic (ReadinessService, WorkDashboardService, etc.)
+  persistence/     # Kysely repository implementations
+    repositories/  # PgControlRepository, PgWorkItemRepository, etc.
+    migrations/    # Kysely TypeScript migrations
+    schema/        # SQL schema (Docker init)
+  mcp/             # MCP server (factory + Zod schemas)
+  cli/             # CLI (factory)
+  config/          # Zod-validated configuration
+  logging/         # Pino logger factory
+  app.ts           # Composition root
+  shutdown.ts      # Graceful shutdown manager
+tests/
+  unit/            # Fast, isolated tests
+  integration/     # Tests against real Postgres
+  helpers/         # Test fixtures
 ```
 
 ### Building
@@ -225,8 +237,11 @@ See `src/persistence/schema/01-init.sql` for full schema details.
 # Compile TypeScript
 npm run build
 
-# Run compiled server
-node dist/mcp/server.js
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
 ```
 
 ### Database Access

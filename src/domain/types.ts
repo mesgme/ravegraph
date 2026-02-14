@@ -18,7 +18,7 @@ export interface ReadinessTrend {
   serviceName: string;
   currentScore: number;
   previousScore?: number;
-  trend: 'IMPROVING' | 'DECLINING' | 'STABLE' | 'NEW';
+  trend: TrendDirection;
   scores: ReadinessScore[];
 }
 
@@ -90,6 +90,66 @@ export interface Service {
   name: string;
   tier?: string;
   createdAt: Date;
+}
+
+export type TrendDirection = 'IMPROVING' | 'DECLINING' | 'STABLE' | 'NEW';
+
+// Database row types for Kysely
+export interface ReadinessScoreRow {
+  id: number;
+  service_id: string;
+  service_name: string;
+  score: string; // DECIMAL comes as string from pg
+  section_scores: Record<string, number> | null;
+  recorded_at: Date;
+  created_at: Date;
+}
+
+export interface ControlRow {
+  id: number;
+  control_type: ControlType;
+  title: string;
+  description: string | null;
+  incident_id: number | null;
+  service_id: string | null;
+  priority: Priority | null;
+  status: ControlStatus;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface WorkItemRow {
+  id: number;
+  external_id: string | null;
+  external_system: ExternalSystem | null;
+  title: string;
+  description: string | null;
+  work_type: WorkType | null;
+  control_id: number | null;
+  incident_id: number | null;
+  service_id: string | null;
+  status: WorkStatus;
+  assigned_to: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface IncidentRow {
+  id: number;
+  title: string;
+  severity: Severity | null;
+  service_id: string | null;
+  started_at: Date;
+  resolved_at: Date | null;
+  impact: string | null;
+  created_at: Date;
+}
+
+export interface ServiceRow {
+  id: string;
+  name: string;
+  tier: string | null;
+  created_at: Date;
 }
 
 // Work Dashboard Aggregated View

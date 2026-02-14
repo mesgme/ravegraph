@@ -20,7 +20,10 @@ See `docs/DELIVERY_BACKLOG.md` for the full backlog and GitHub issues.
 docker compose up -d
 
 # Install dependencies
-npm install
+npm install --legacy-peer-deps
+
+# Run tests
+npm test
 
 # Run MCP server
 npm run dev
@@ -28,6 +31,23 @@ npm run dev
 # Run CLI
 npm run cli -- --help
 ```
+
+## Architecture
+
+Ports-and-adapters (hexagonal). See `docs/adr/0003-architecture-improvements.md`.
+
+- **Domain** (`src/domain/`) — Types, errors, constants, port interfaces
+- **Services** (`src/service/`) — Business logic, operates on ports
+- **Persistence** (`src/persistence/`) — Kysely repository implementations
+- **Adapters** (`src/mcp/`, `src/cli/`) — Factory functions accepting injected services
+- **Composition root** (`src/app.ts`) — Wires everything together
+
+### Key Libraries
+
+- **Kysely** — Type-safe SQL query builder
+- **Zod** — Input validation at MCP/CLI boundaries
+- **Pino** — Structured logging
+- **Vitest** — Test framework
 
 ## Git Workflow
 
