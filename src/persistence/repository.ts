@@ -41,7 +41,6 @@ export async function getControls(filters?: {
   if (filters?.priority) {
     query += ` AND priority = $${paramIndex}`;
     params.push(filters.priority);
-    paramIndex++;
   }
 
   query += ' ORDER BY created_at DESC';
@@ -60,14 +59,14 @@ export async function getControlCounts(): Promise<{
     FROM controls 
     GROUP BY control_type
   `;
-  
+
   const priorityQuery = `
     SELECT priority, COUNT(*) as count 
     FROM controls 
     WHERE priority IS NOT NULL
     GROUP BY priority
   `;
-  
+
   const statusQuery = `
     SELECT status, COUNT(*) as count 
     FROM controls 
@@ -81,17 +80,17 @@ export async function getControlCounts(): Promise<{
   ]);
 
   const byType = {} as Record<ControlType, number>;
-  typeResult.rows.forEach(row => {
+  typeResult.rows.forEach((row) => {
     byType[row.control_type as ControlType] = parseInt(row.count);
   });
 
   const byPriority = {} as Record<Priority, number>;
-  priorityResult.rows.forEach(row => {
+  priorityResult.rows.forEach((row) => {
     byPriority[row.priority as Priority] = parseInt(row.count);
   });
 
   const byStatus = {} as Record<ControlStatus, number>;
-  statusResult.rows.forEach(row => {
+  statusResult.rows.forEach((row) => {
     byStatus[row.status as ControlStatus] = parseInt(row.count);
   });
 
@@ -123,7 +122,6 @@ export async function getWorkItems(filters?: {
   if (filters?.controlId) {
     query += ` AND control_id = $${paramIndex}`;
     params.push(filters.controlId);
-    paramIndex++;
   }
 
   query += ' ORDER BY created_at DESC';
@@ -141,7 +139,7 @@ export async function getWorkItemCounts(): Promise<{
     FROM work_items 
     GROUP BY status
   `;
-  
+
   const typeQuery = `
     SELECT work_type, COUNT(*) as count 
     FROM work_items 
@@ -155,12 +153,12 @@ export async function getWorkItemCounts(): Promise<{
   ]);
 
   const byStatus = {} as Record<WorkStatus, number>;
-  statusResult.rows.forEach(row => {
+  statusResult.rows.forEach((row) => {
     byStatus[row.status as WorkStatus] = parseInt(row.count);
   });
 
   const byType = {} as Record<WorkType, number>;
-  typeResult.rows.forEach(row => {
+  typeResult.rows.forEach((row) => {
     byType[row.work_type as WorkType] = parseInt(row.count);
   });
 
@@ -173,7 +171,7 @@ export async function getReadinessTrends(options?: {
   daysBack?: number;
 }): Promise<ReadinessTrend[]> {
   const daysBack = options?.daysBack || 30;
-  
+
   let query = `
     SELECT 
       service_id,
@@ -194,10 +192,10 @@ export async function getReadinessTrends(options?: {
   query += ' ORDER BY service_id, recorded_at DESC';
 
   const result = await pool.query(query, params);
-  
+
   // Group scores by service
   const serviceScores = new Map<string, ReadinessScore[]>();
-  result.rows.forEach(row => {
+  result.rows.forEach((row) => {
     const score = mapReadinessScoreFromDb(row);
     if (!serviceScores.has(score.serviceId)) {
       serviceScores.set(score.serviceId, []);
@@ -207,12 +205,12 @@ export async function getReadinessTrends(options?: {
 
   // Build trends
   const trends: ReadinessTrend[] = [];
-  serviceScores.forEach((scores, serviceId) => {
+  serviceScores.forEach((scores, _serviceId) => {
     if (scores.length === 0) return;
-    
+
     const currentScore = scores[0];
     const previousScore = scores.length > 1 ? scores[1] : undefined;
-    
+
     let trend: 'IMPROVING' | 'DECLINING' | 'STABLE' | 'NEW' = 'NEW';
     if (previousScore) {
       const diff = currentScore.score - previousScore.score;
@@ -243,13 +241,14 @@ export async function getAverageReadinessScore(): Promise<number> {
       ORDER BY service_id, recorded_at DESC
     ) latest_scores
   `;
-  
+
   const result = await pool.query(query);
   return parseFloat(result.rows[0]?.avg_score || '0');
 }
 
 export async function getTrackedServicesCount(): Promise<number> {
-  const query = 'SELECT COUNT(DISTINCT service_id) as count FROM readiness_scores';
+  const query =
+    'SELECT COUNT(DISTINCT service_id) as count FROM readiness_scores';
   const result = await pool.query(query);
   return parseInt(result.rows[0]?.count || '0');
 }

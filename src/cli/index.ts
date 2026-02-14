@@ -10,7 +10,7 @@ import {
 
 /**
  * Ravegraph CLI
- * 
+ *
  * Simple CLI for interacting with the Work Dashboard
  */
 
@@ -21,7 +21,9 @@ async function main() {
   // Test database connection
   const connected = await testConnection();
   if (!connected) {
-    console.error('Failed to connect to database. Please ensure PostgreSQL is running.');
+    console.error(
+      'Failed to connect to database. Please ensure PostgreSQL is running.'
+    );
     console.error('Run: docker compose up -d');
     process.exit(1);
   }
@@ -31,7 +33,9 @@ async function main() {
       case 'dashboard':
       case 'd': {
         const serviceId = args[1];
-        const dashboard = await getWorkDashboard(serviceId ? { serviceId } : undefined);
+        const dashboard = await getWorkDashboard(
+          serviceId ? { serviceId } : undefined
+        );
         console.log(JSON.stringify(dashboard, null, 2));
         break;
       }
@@ -95,7 +99,10 @@ Database:
       }
     }
   } catch (error) {
-    console.error('Error:', error instanceof Error ? error.message : String(error));
+    console.error(
+      'Error:',
+      error instanceof Error ? error.message : String(error)
+    );
     process.exit(1);
   }
 

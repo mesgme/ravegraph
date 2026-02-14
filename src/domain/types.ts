@@ -24,7 +24,12 @@ export interface ReadinessTrend {
 
 // Resilience Backlog (Issue #23)
 export type ControlType = 'PREVENT' | 'DETECT' | 'RESPOND' | 'LEARN';
-export type ControlStatus = 'PROPOSED' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'REJECTED';
+export type ControlStatus =
+  | 'PROPOSED'
+  | 'APPROVED'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'REJECTED';
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 export interface Control {
@@ -41,7 +46,11 @@ export interface Control {
 }
 
 // Incident-derived Work (Issue #24)
-export type WorkType = 'REMEDIATION' | 'INVESTIGATION' | 'DOCUMENTATION' | 'MODEL_UPDATE';
+export type WorkType =
+  | 'REMEDIATION'
+  | 'INVESTIGATION'
+  | 'DOCUMENTATION'
+  | 'MODEL_UPDATE';
 export type WorkStatus = 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CLOSED';
 export type ExternalSystem = 'GITHUB' | 'JIRA' | 'LINEAR';
 
