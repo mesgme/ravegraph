@@ -1,0 +1,31 @@
+{
+  "name": "ravegraph",
+  "version": "0.1.0",
+  "description": "MCP-based platform for storing system details for consulting SREs",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/mcp/server.ts",
+    "build": "tsc",
+    "cli": "tsx src/cli/index.ts",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "sre",
+    "readiness",
+    "resilience"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
