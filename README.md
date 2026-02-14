@@ -63,7 +63,7 @@ npm run build
 npm link
 
 # Test CLI directly
-ravegraph --help
+rave --help
 
 # Or test via npm script
 npm run cli -- help
@@ -82,28 +82,28 @@ The CLI provides quick access to Work Dashboard data using the Commander.js fram
 
 ```bash
 # Show help
-ravegraph --help
+rave --help
 
 # Get full work dashboard
-ravegraph dashboard
+rave dashboard
 
 # Get dashboard for specific service
-ravegraph dashboard api-service
+rave dashboard api-service
 
 # Get resilience backlog controls
-ravegraph controls
+rave controls
 
 # Get incident-derived work items
-ravegraph work
+rave work
 
 # Get readiness trends
-ravegraph trends
+rave trends
 
 # Use command aliases (d, c, w, t)
-ravegraph d          # dashboard
-ravegraph c          # controls
-ravegraph w          # work
-ravegraph t          # trends
+rave d          # dashboard
+rave c          # controls
+rave w          # work
+rave t          # trends
 ```
 
 #### Using npm run cli

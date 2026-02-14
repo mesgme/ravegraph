@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "ravegraph": "./dist/cli/index.js"
+    "rave": "./dist/cli/index.js"
   },
   "files": [
     "dist"

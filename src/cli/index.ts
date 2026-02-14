@@ -10,7 +10,7 @@ import {
 } from '../persistence/repository.js';
 
 /**
- * Ravegraph CLI
+ * Rave CLI
  *
  * CLI for interacting with the Work Dashboard using Commander.js framework
  */
@@ -18,8 +18,8 @@ import {
 const program = new Command();
 
 program
-  .name('ravegraph')
-  .description('Ravegraph CLI - Work Dashboard for SRE consulting')
+  .name('rave')
+  .description('Rave CLI - Work Dashboard for SRE consulting')
   .version('0.1.0');
 
 // Dashboard command
