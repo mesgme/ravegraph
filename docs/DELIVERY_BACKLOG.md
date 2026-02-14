@@ -21,7 +21,7 @@ This document defines the delivery plan for building the MCP-based Readiness, Su
 ```
 /src
   /tools          # MCP tool handlers (upsert_evidence, search_evidence, etc.)
-  /cli            # CLI commands (ravegraph services list, etc.)
+  /cli            # CLI commands (rave services list, etc.)
   /tui            # Terminal UI (Phase 2+)
   /domain         # Entities, scoring logic, taxonomy
   /persistence    # DB schema, migrations, repositories
@@ -93,14 +93,14 @@ Set up the `ravegraph` CLI framework alongside the MCP server.
 
 **Deliverables**
 
-* CLI entry point (`ravegraph` command)
+* CLI entry point (`rave` command)
 * Command framework (e.g. Commander.js or similar)
 * Shared domain/persistence wiring with MCP server
-* `ravegraph --help` works
+* `rave --help` works
 
 **Acceptance Criteria**
 
-* `ravegraph` command runs locally
+* `rave` command runs locally
 * Help output lists available subcommands
 * Shares domain layer with MCP server (no logic duplication)
 
@@ -156,9 +156,9 @@ Build ingestion + retrieval interfaces via MCP tools and CLI.
 
 **CLI Commands**
 
-* `ravegraph evidence add`
-* `ravegraph evidence search`
-* `ravegraph evidence get`
+* `rave evidence add`
+* `rave evidence search`
+* `rave evidence get`
 
 **Capabilities**
 
@@ -194,9 +194,9 @@ Store and manage service metadata via MCP tools and CLI.
 
 **CLI Commands**
 
-* `ravegraph services list`
-* `ravegraph services get <id>`
-* `ravegraph services add`
+* `rave services list`
+* `rave services get <id>`
+* `rave services add`
 
 **Metadata**
 
@@ -369,7 +369,7 @@ Interactive terminal UI for browsing and editing Ravegraph data. Built on Ink (R
 
 **Acceptance Criteria**
 
-* `ravegraph tui` launches interactive interface
+* `rave tui` launches interactive interface
 * Can view and edit all entities from Phase 1–2
 * Built on shared domain layer (no logic duplication)
 
