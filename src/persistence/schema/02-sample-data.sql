@@ -38,3 +38,27 @@ INSERT INTO readiness_scores (service_id, service_name, score, section_scores, r
   ('web-service', 'Web Service', 73.5, '{"deploy": 76, "monitoring": 72, "security": 70, "documentation": 76}', NOW() - INTERVAL '1 day'),
   ('worker-service', 'Worker Service', 68.0, '{"deploy": 70, "monitoring": 65, "security": 70, "documentation": 67}', NOW()),
   ('worker-service', 'Worker Service', 65.0, '{"deploy": 68, "monitoring": 62, "security": 68, "documentation": 62}', NOW() - INTERVAL '1 day');
+
+-- Insert sample evidence items
+INSERT INTO evidence_items (service_id, evidence_type, source, body, tags, confidence, ttl_hours, collected_at, expires_at) VALUES
+  ('api-service', 'MONITORING', 'prometheus', '{"uptime": "99.95%", "p99_latency_ms": 120, "error_rate": 0.02}', ARRAY['production', 'auto'], 90, 24, NOW(), NOW() + INTERVAL '24 hours'),
+  ('api-service', 'SBOM', 'syft', '{"packages": 142, "critical_vulns": 0, "high_vulns": 2}', ARRAY['auto', 'ci'], 95, 168, NOW(), NOW() + INTERVAL '168 hours'),
+  ('api-service', 'DEPLOYMENT', 'argocd', '{"version": "v2.3.1", "replicas": 3, "strategy": "rolling"}', ARRAY['production'], 100, NULL, NOW(), NULL),
+  ('web-service', 'MONITORING', 'datadog', '{"rum_p95_ms": 850, "js_error_rate": 0.5}', ARRAY['production', 'auto'], 80, 12, NOW(), NOW() + INTERVAL '12 hours'),
+  ('worker-service', 'VULNERABILITY_SCAN', 'trivy', '{"critical": 1, "high": 3, "medium": 8}', ARRAY['ci', 'auto'], 85, 72, NOW(), NOW() + INTERVAL '72 hours');
+
+-- Insert sample claims
+INSERT INTO claims (service_id, title, section, status, confidence, reason) VALUES
+  ('api-service', 'Has production monitoring', 'monitoring', 'PASS', 90, 'Prometheus metrics with alerting configured'),
+  ('api-service', 'Software supply chain tracked', 'security', 'PARTIAL', 70, 'SBOM generated but 2 high vulns unaddressed'),
+  ('api-service', 'Deployment is reproducible', 'deploy', 'PASS', 100, 'ArgoCD GitOps deployment verified'),
+  ('web-service', 'Has production monitoring', 'monitoring', 'PARTIAL', 60, 'Datadog RUM configured but no alerting'),
+  ('worker-service', 'No critical vulnerabilities', 'security', 'FAIL', 85, '1 critical vulnerability found in latest scan');
+
+-- Link evidence to claims
+INSERT INTO claim_evidence (claim_id, evidence_id) VALUES
+  (1, 1),  -- monitoring claim linked to prometheus evidence
+  (2, 2),  -- supply chain claim linked to SBOM evidence
+  (3, 3),  -- deployment claim linked to argocd evidence
+  (4, 4),  -- web monitoring claim linked to datadog evidence
+  (5, 5);  -- vulnerability claim linked to trivy evidence

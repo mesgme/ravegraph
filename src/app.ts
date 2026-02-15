@@ -5,10 +5,14 @@ import { createDb, testConnection } from './persistence/connection.js';
 import { PgControlRepository } from './persistence/repositories/pg-control-repository.js';
 import { PgWorkItemRepository } from './persistence/repositories/pg-work-item-repository.js';
 import { PgReadinessRepository } from './persistence/repositories/pg-readiness-repository.js';
+import { PgEvidenceRepository } from './persistence/repositories/pg-evidence-repository.js';
+import { PgClaimRepository } from './persistence/repositories/pg-claim-repository.js';
 import { ControlService } from './service/control-service.js';
 import { WorkItemService } from './service/work-item-service.js';
 import { ReadinessService } from './service/readiness-service.js';
 import { WorkDashboardService } from './service/work-dashboard-service.js';
+import { EvidenceService } from './service/evidence-service.js';
+import { ClaimService } from './service/claim-service.js';
 import { createMcpServer } from './mcp/server.js';
 import { createCli } from './cli/index.js';
 import { ShutdownManager } from './shutdown.js';
@@ -29,6 +33,8 @@ export async function buildApp() {
   const controlRepo = new PgControlRepository(db);
   const workItemRepo = new PgWorkItemRepository(db);
   const readinessRepo = new PgReadinessRepository(db);
+  const evidenceRepo = new PgEvidenceRepository(db);
+  const claimRepo = new PgClaimRepository(db);
 
   // Services
   const controlService = new ControlService(controlRepo);
@@ -39,12 +45,16 @@ export async function buildApp() {
     workItemRepo,
     readinessRepo
   );
+  const evidenceService = new EvidenceService(evidenceRepo);
+  const claimService = new ClaimService(claimRepo);
 
   const deps = {
     controlService,
     workItemService,
     readinessService,
     dashboardService,
+    evidenceService,
+    claimService,
   };
 
   return {
